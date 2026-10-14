@@ -1,22 +1,32 @@
 import Banking.BankAccount;
 import Banking.InsufficientBalanceException;
+import Banking.TransactionTask;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+            throws InterruptedException {
 
-        BankAccount account = new BankAccount(101, 1000);
+        BankAccount account = new BankAccount(101, 10000);
 
-        try {
-            account.deposit(500);
-            account.withdraw(500);
+        Thread t1 = new Thread(
+                new TransactionTask(account, 7000),
+                "Transaction-A"
+        );
 
-        } catch (InsufficientBalanceException err) {
-            System.out.println("Transaction failed: " + err.getMessage());
-        } finally{
-            account.intrestwithWithdrow(500 , 360);
-            System.out.println("Final Balance: Rs. " + account.getBalance());
-            System.out.println("Transaction Process complete");
-        }
+        Thread t2 = new Thread(
+                new TransactionTask(account, 6000),
+                "Transaction-B"
+        );
+
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join();
+
+        System.out.println(
+                "Final Balance: Rs. " + account.getBalance()
+        );
 
 
 

@@ -30,7 +30,9 @@ public class BankAccount {
         System.out.println("Deposit successful: Rs. " + amount);
     }
 
-    public void withdraw(double amount)
+
+
+    public synchronized void withdraw(double amount)
             throws InsufficientBalanceException {
 
         if (amount <= 0) {
@@ -41,12 +43,28 @@ public class BankAccount {
 
         if (amount > balance) {
             throw new InsufficientBalanceException(
-                    "Your balance is insufficient!"
+                    "Insufficient balance!"
             );
         }
 
+        System.out.println(
+                Thread.currentThread().getName()
+                        + " checked balance: Rs. " + balance
+        );
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return;
+        }
+
         balance = balance - amount;
-        System.out.println("Withdrawal successful: Rs. " + amount);
+
+        System.out.println(
+                Thread.currentThread().getName()
+                        + " withdrawal successful: Rs. " + amount
+        );
     }
 
     public void intrestwithDeposite(double amount) {
