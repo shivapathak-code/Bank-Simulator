@@ -8,11 +8,12 @@ public class Main {
 
         try {
             account.deposit(500);
-            account.withdraw(2000);
+            account.withdraw(500);
 
         } catch (InsufficientBalanceException err) {
             System.out.println("Transaction failed: " + err.getMessage());
         } finally{
+            account.intrestwithWithdrow(500 , 360);
             System.out.println("Final Balance: Rs. " + account.getBalance());
             System.out.println("Transaction Process complete");
         }
