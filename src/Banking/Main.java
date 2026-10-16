@@ -18,11 +18,19 @@ public class Main {
                 "Transaction-B"
         );
 
+        Thread t3 = new Thread(
+                new TransactionTask(account, 5000),
+                "Transaction-c"
+        );
+
+
         t1.start();
         t2.start();
+        t3.start();
 
         t1.join();
         t2.join();
+        t3.join();
 
         System.out.println(
                 "Final Balance: Rs. " + account.getBalance()
